@@ -8,3 +8,7 @@ def index():
 @app.route('/user', methods= ['GET'])
 def users():
     return UserController.index()
+
+@app.route('/user/<id>', methods= ['GET'])
+def userDetail(id):
+    return UserController.detail(id)
