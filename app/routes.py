@@ -23,6 +23,6 @@ def userDetail(id):
         return UserController.delete(id)
         
 
-#@app.route('login'. methods=['POST'])
-#def logins():
-#    return UserController.
+@app.route('/login', methods=['POST'])
+def logins():
+   return UserController.login()
