@@ -30,6 +30,8 @@ def singleObject(data):
         'name' : data.name,
         'role' : data.role,
         'email' : data.email,
+        'phone' : data.phone,
+        'address' : data.address
     }
 
     return data
