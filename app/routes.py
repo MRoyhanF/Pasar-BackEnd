@@ -13,9 +13,12 @@ def users():
     else:
         return UserController.save()
 
-@app.route('/user/<id>', methods= ['GET'])
+@app.route('/user/<id>', methods= ['GET', 'PUT'])
 def userDetail(id):
-    return UserController.detail(id)
+    if request.method == 'GET':
+        return UserController.detail(id)
+    else:
+        return UserController.edit(id)
 
 #@app.route('login'. methods=['POST'])
 #def logins():

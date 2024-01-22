@@ -119,3 +119,37 @@ def save():
         
     except Exception as e:
         print(e)
+
+#update data dosen
+def edit(id):
+    try:
+        name = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        phone = request.form.get('phone')
+        address = request.form.get('address')
+
+        input = [
+            {
+                'name' : name,
+                'email' : email,
+                'password' : password,
+                'phone' : phone,
+                'address' : address,
+            }
+        ]
+        
+        user = User.query.filter_by(id=id).first()
+
+        user.name = name
+        user.email = email
+        user.password = password
+        user.phone = phone
+        user.address = address
+
+        db.session.commit()
+
+        return response.success(input, 'Success Update Data !')
+    
+    except Exception as e:
+        print(e)
