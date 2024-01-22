@@ -120,7 +120,7 @@ def save():
     except Exception as e:
         print(e)
 
-#update data dosen
+#update data user
 def edit(id):
     try:
         name = request.form.get('name')
@@ -153,3 +153,18 @@ def edit(id):
     
     except Exception as e:
         print(e)
+
+#hapus data user
+def delete(id):
+    try:
+        user = User.query.filter_by(id=id).first()
+        if not user:
+            return response.badRequest([], 'Data User Kosong...!!')
+        
+        db.session.delete(user)
+        db.session.commit()
+
+        return response.success('', 'Berhasil Menghapus Data User...!')
+
+    except Exception as e:
+        print(e)  
