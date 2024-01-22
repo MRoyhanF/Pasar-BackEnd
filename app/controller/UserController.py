@@ -1,6 +1,7 @@
 from app.model.user import User
 from app.model.product import Product
 
+from flask import render_template
 from app import response, app, db
 from flask import request
 
@@ -88,3 +89,33 @@ def formatProduct(data):
     for i in data:
         array.append(singleProduct(i))
     return array
+
+#create user
+def save():
+    try :
+        name = request.form.get('name')
+        role = 'User'
+        email = request.form.get('email')
+        password = request.form.get('password')
+        phone = request.form.get('phone')
+        address = request.form.get('address')
+
+        input = [
+            {
+                'name' : name,
+                'role' : role,
+                'email' : email,
+                'password' : password,
+                'phone' : phone,
+                'address' : address,
+            }
+        ]
+
+        users = User(name=name, role=role, email=email, password=password, phone=phone, address=address)
+        db.session.add(users)
+        db.session.commit()
+
+        return response.success(input, 'create user successfully')
+        
+    except Exception as e:
+        print(e)
