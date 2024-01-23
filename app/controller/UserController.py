@@ -1,26 +1,23 @@
 from app.model.user import User
 from app.model.product import Product
 
+from flask import render_template
+
 from app import response, app, db
 from flask import request
-from flask_jwt_extended import create_access_token, create_refresh_token
 
 ## function mengambil data dosen
 def index():
     try:
         user = User.query.all()
         data = formatArray(user)
-        #res = response.success(data, "success")
-        #return data, res
         return response.success(data, "success")
-        #return render_tamplate("dosen.html", )
     except Exception as e:
         print(e)
 
 # buat array kosong untuk menampung data
 def formatArray(datas):
     array = []
-
     for i in datas:
         array.append(singleObject(i))
 
@@ -33,7 +30,7 @@ def singleObject(data):
         'role' : data.role,
         'email' : data.email,
         'phone' : data.phone,
-        'address' : data.address
+        'address' : data.address,
     }
 
     return data
@@ -169,15 +166,7 @@ def delete(id):
     except Exception as e:
         print(e) 
 
-def singleObject(data):
-    data = {
-        'id' : data.id,
-        'name' : data.name,
-        "email" : data.email,
-        'level' : data.level
-    }
-    
-    return data 
+
 
 #login user
 def login():
