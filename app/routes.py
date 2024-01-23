@@ -8,7 +8,6 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 def index():
     return 'Hello Flask App testing'
 
-#example route
 @app.route("/user/detail", methods=['GET'])
 @jwt_required()
 def protected():
@@ -24,7 +23,7 @@ def users():
         return UserController.index()
     else:
         return UserController.save()
-        
+
 
 @app.route('/user/<id>', methods= ['GET', 'PUT', 'DELETE'])
 @jwt_required()
