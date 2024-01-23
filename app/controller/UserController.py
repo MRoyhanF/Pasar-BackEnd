@@ -6,6 +6,7 @@ from flask import render_template
 from app import response, app, db
 from flask import request
 
+
 ## function mengambil data dosen
 def index():
     try:
@@ -101,14 +102,13 @@ def save():
             {
                 'name' : name,
                 'role' : role,
-                'email' : email,
-                'password' : password,
-                'phone' : phone,
-                'address' : address,
             }
         ]
 
         users = User(name=name, role=role, email=email, password=password, phone=phone, address=address)
+
+        users.setPassword(password)
+
         db.session.add(users)
         db.session.commit()
 
@@ -116,6 +116,7 @@ def save():
         
     except Exception as e:
         print(e)
+        return response.badRequest([], 'Failed to create user')
 
 #update data user
 def edit(id):
@@ -166,34 +167,3 @@ def delete(id):
     except Exception as e:
         print(e) 
 
-
-
-#login user
-def login():
-    try:
-        email = request.form.get('email')
-        password = request.form.get('password')
-        
-        user = User.query.filter_by(email=email).first()
-        
-        if not user:
-            return response.badRequest([],'Email tidak terdaftar')
-        
-        if not user.checkPassword(password):
-            return response.badRequest([],'Kombinasi Password Salah')
-        
-        data = singleObject(user)
-        
-        expires = datetime.timedelta(days=7)
-        expires_refresh = datetime.timedelta(days=7)
-        
-        access_token = create_access_token(data, fresh=True, expires_delta= expires)
-        refresh_token = create_refresh_token(data, expires_delta= expires_refresh)
-        
-        return response.success({
-            "data" : data,
-            "access_token" : access_token,
-            "refresh_token" : refresh_token,
-        }, "Sukses Login!")
-    except Exception as e:
-        print(e)

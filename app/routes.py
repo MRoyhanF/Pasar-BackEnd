@@ -1,5 +1,6 @@
 from app import app
 from app.controller import UserController
+from app.controller import AuthController
 from flask import request, render_template
 
 @app.route ('/')
@@ -25,4 +26,4 @@ def userDetail(id):
 
 @app.route('/login', methods=['POST'])
 def logins():
-   return UserController.login()
+   return AuthController.login()
