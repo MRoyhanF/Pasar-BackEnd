@@ -2,6 +2,7 @@ from app import app, response
 from app.controller import UserController
 from app.controller import AuthController
 from app.controller import ProductController
+from app.controller import TransactionController
 from flask import request, render_template
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
@@ -67,3 +68,9 @@ def productDetail(id):
         return ProductController.edit(id)
     else :
         return ProductController.delete(id)
+
+
+# TRANSACTION ROUTE
+@app.route('/transaction', methods=['GET'])
+def transaction():
+    return TransactionController.index()
