@@ -35,3 +35,44 @@ def singleObject(data):
     }
 
     return data
+
+# add transaction
+def save():
+    try:
+        current_user = get_jwt_identity()
+        # print("Current User:", current_user)
+        
+        if not isinstance(current_user, dict):
+            return response.badRequest([], 'Invalid user identity in JWT')
+
+            # Pastikan atribut 'name' tersedia di dalam objek current_user
+        if 'id' not in current_user:
+            return response.badRequest([], 'Field "id" not found in current_user')
+
+        id_user = current_user['id']
+        # print("id user :", id_user)
+
+        id_product = request.form.get('id_product')
+        quantity = request.form.get('quantity')
+        amount = request.form.get('amount')
+
+        input = [
+            {
+                'id_user' : id_user,
+                'id_product' : id_product,
+                'quantity' : quantity,
+                'amount' : amount
+            }
+        ]
+
+        transaction = Transaction(id_user=id_user, id_product=id_product, qty=quantity, Amount=amount)
+
+        db.session.add(transaction)
+        db.session.commit()
+
+        return response.success(input, 'Create Transaction Successfully..')
+
+    except Exception as e:
+        print(e)
+
+

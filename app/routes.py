@@ -71,6 +71,10 @@ def productDetail(id):
 
 
 # TRANSACTION ROUTE
-@app.route('/transaction', methods=['GET'])
+@app.route('/transaction', methods=['GET', 'POST'])
+@jwt_required()
 def transaction():
-    return TransactionController.index()
+    if request.method == 'GET':
+        return TransactionController.index()
+    else :
+        return TransactionController.save()
