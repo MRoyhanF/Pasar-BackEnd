@@ -20,7 +20,6 @@ def protected():
 
 
 @app.route('/user', methods= ['GET', 'POST'])
-@jwt_required()
 def users():
     if request.method == 'GET':
         return UserController.index()
@@ -48,10 +47,19 @@ def logins():
 
 # PRODUCT ROUTE
 
-@app.route('/product', methods=['GET'])
+@app.route('/product', methods=['GET', 'POST'])
 def products():
-    return ProductController.index()
+    if request.method == 'GET':
+        return ProductController.index()
+    else :
+        current_user = get_jwt_identity()
+        print(current_user)
+    
 
 @app.route('/product/<id>', methods=['GET'])
+@jwt_required()
 def productDetail(id):
-    return ProductController.detail(id)
+    if request.method == 'GET':
+        return ProductController.detail(id)
+    else :
+        print('testing')

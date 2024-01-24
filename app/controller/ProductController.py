@@ -46,8 +46,6 @@ def singleObject(data):
 def detail(id):
     try:
         product = Product.query.filter_by(id=id).first()
-        # own = User.query.filter(id == product.id_user).first()
-        # owner = own.name
 
         if not product:
             return response.badRequest([], 'Tidak ada data product')
@@ -77,3 +75,35 @@ def singleDetailProduct(user, owner=None):
     }
 
     return data
+
+#create product
+def save():
+    user = User.query.get()
+    try :
+        type = request.form.get('type')
+        name = request.form.get('name')
+        description = request.form.get('description')
+        set = request.form.get('set')
+        quantity = request.form.get('quantity')
+        price = request.form.get('price')
+        id_user = User.query.filter_by(email=email).first()
+
+        input = [
+            {
+                'name' : name,
+                'role' : role,
+            }
+        ]
+
+        users = User(name=name, role=role, email=email, password=password, phone=phone, address=address)
+
+        users.setPassword(password)
+
+        db.session.add(users)
+        db.session.commit()
+
+        return response.success(input, 'create user successfully')
+        
+    except Exception as e:
+        print(e)
+        return response.badRequest([], 'Failed to create user')

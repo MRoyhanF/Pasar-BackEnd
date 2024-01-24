@@ -131,7 +131,6 @@ def edit(id):
         password = request.form.get('password')
         phone = request.form.get('phone')
         address = request.form.get('address')
-        #photo = request.form
 
         if 'photo' not in request.files:
             return response.badRequest([],'File tidak tersedia')
@@ -140,12 +139,14 @@ def edit(id):
 
         if photo.filename == '':
             return response.badRequest([],'File tidak tersedia')
+
         if photo and uploadconfig.allowed_file(photo.filename):
             uid = uuid.uuid4()
             filename =  secure_filename(photo.filename)
             renamefile = "Photo-"+str(uid)+filename
 
             photo.save(os.path.join(app.config['UPLOAD_FOLDER'], renamefile))
+
         input = [
             {
                 'name' : name,
@@ -162,10 +163,13 @@ def edit(id):
 
         user.name = name
         user.email = email
-        user.password = password
+        # user.password = user.setPassword(password)
         user.phone = phone
         user.address = address
-        user.photo = photo
+        user.photo = renamefile
+
+        if password:
+            user.setPassword(password)
 
         db.session.commit()
 
