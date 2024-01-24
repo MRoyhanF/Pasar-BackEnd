@@ -122,3 +122,18 @@ def save():
     except Exception as e:
         print(e)
         return response.badRequest([], 'Failed to create product')
+
+#hapus data user
+def delete(id):
+    try:
+        product = Product.query.filter_by(id=id).first()
+        if not product:
+            return response.badRequest([], 'Data Prodcut Kosong...!!')
+        
+        db.session.delete(product)
+        db.session.commit()
+
+        return response.success('', 'Berhasil Menghapus Data Product...!')
+
+    except Exception as e:
+        print(e) 
