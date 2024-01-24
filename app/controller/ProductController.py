@@ -123,6 +123,47 @@ def save():
         print(e)
         return response.badRequest([], 'Failed to create product')
 
+
+#update data product
+def edit(id):
+    try:
+        type = request.form.get('type')
+        name = request.form.get('name')
+        description = request.form.get('description')
+        set = request.form.get('set')
+        quantity = request.form.get('quantity')
+        price = request.form.get('price')
+
+        input = [
+            {
+                'typpe' : type,
+                'name' : name,
+                'description' : description,
+                'set' : set,
+                'quantity' : quantity,
+                'price' : price,
+                
+            }
+        ]
+        
+        product = Product.query.filter_by(id=id).first()
+
+        product.type = type
+        product.name = name
+        product.description = description
+        product.set = set
+        product.qty = quantity
+        product.price = price
+        product.id_user = product.id_user
+
+        db.session.commit()
+
+        return response.success(input, 'Success Update Data !')
+    
+    except Exception as e:
+        print(e)
+
+
 #hapus data user
 def delete(id):
     try:

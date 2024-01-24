@@ -58,10 +58,12 @@ def products():
         return ProductController.save()
     
 
-@app.route('/product/<id>', methods=['GET', 'DELETE'])
+@app.route('/product/<id>', methods=['GET', 'PUT', 'DELETE'])
 @jwt_required()
 def productDetail(id):
     if request.method == 'GET':
         return ProductController.detail(id)
+    elif request.method == 'PUT':
+        return ProductController.edit(id)
     else :
         return ProductController.delete(id)
