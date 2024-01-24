@@ -51,3 +51,7 @@ def logins():
 @app.route('/product', methods=['GET'])
 def products():
     return ProductController.index()
+
+@app.route('/product/<id>', methods=['GET'])
+def productDetail(id):
+    return ProductController.detail(id)

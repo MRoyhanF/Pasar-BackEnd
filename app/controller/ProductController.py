@@ -26,7 +26,7 @@ def formatArray(datas):
 
 
 def singleObject(data):
-    own = User.query.filter(User.id == data.id_user).first()
+    own = User.query.filter(id == data.id_user).first()
     owner = own.name if own else None
     data = {
         'id' : data.id,
@@ -37,6 +37,43 @@ def singleObject(data):
         'quantity' : data.qty,
         'price' : data.price,
         'owner' : owner,
+    }
+
+    return data
+
+
+# get detail data product
+def detail(id):
+    try:
+        product = Product.query.filter_by(id=id).first()
+        # own = User.query.filter(id == product.id_user).first()
+        # owner = own.name
+
+        if not product:
+            return response.badRequest([], 'Tidak ada data product')
+
+        owner = get_owner_name(product.id_user)
+        data = singleDetailProduct(product, owner)
+
+        return response.success(data, "success")
+
+    except Exception as e:
+        print(e)
+
+def get_owner_name(user_id):
+    user = User.query.get(user_id)
+    return user.name if user else None
+
+def singleDetailProduct(user, owner=None):
+    data = {
+        'id' : user.id,
+        'type' : user.type,
+        'name' : user.name,
+        'description' : user.description,
+        'set' : user.set,
+        'quantity' : user.qty,
+        'price' : user.price,
+        'owner': owner,
     }
 
     return data
