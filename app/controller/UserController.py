@@ -3,8 +3,12 @@ from app.model.product import Product
 
 from flask import render_template
 
-from app import response, app, db
+import os
+from app import response, app, db, uploadconfig
 from flask import request
+
+import uuid
+from werkzeug.utils import secure_filename
 
 
 ## function mengambil data dosen
@@ -32,6 +36,7 @@ def singleObject(data):
         'email' : data.email,
         'phone' : data.phone,
         'address' : data.address,
+        'photo' : data.photo
     }
 
     return data
@@ -126,7 +131,21 @@ def edit(id):
         password = request.form.get('password')
         phone = request.form.get('phone')
         address = request.form.get('address')
+        #photo = request.form
 
+        if 'photo' not in request.files:
+            return response.badRequest([],'File tidak tersedia')
+
+        photo = request.files['photo']
+
+        if photo.filename == '':
+            return response.badRequest([],'File tidak tersedia')
+        if photo and uploadconfig.allowed_file(photo.filename):
+            uid = uuid.uuid4()
+            filename =  secure_filename(photo.filename)
+            renamefile = "Photo-"+str(uid)+filename
+
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], renamefile))
         input = [
             {
                 'name' : name,
@@ -134,6 +153,8 @@ def edit(id):
                 'password' : password,
                 'phone' : phone,
                 'address' : address,
+                'photo' : renamefile
+                
             }
         ]
         
@@ -144,6 +165,7 @@ def edit(id):
         user.password = password
         user.phone = phone
         user.address = address
+        user.photo = photo
 
         db.session.commit()
 

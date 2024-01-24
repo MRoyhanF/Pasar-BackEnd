@@ -8,12 +8,14 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 def index():
     return 'Hello Flask App testing'
 
+
+#USER ROUTES
+
 @app.route("/user/detail", methods=['GET'])
 @jwt_required()
 def protected():
     current_user = get_jwt_identity()
     return response.success(current_user, 'Success')
-
 
 
 @app.route('/user', methods= ['GET', 'POST'])
@@ -36,7 +38,8 @@ def userDetail(id):
         return UserController.delete(id)
         
 
+# AUTH ROUTE
+
 @app.route('/login', methods=['POST'])
-@jwt_required()
 def logins():
    return AuthController.login()

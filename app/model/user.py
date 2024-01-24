@@ -11,6 +11,7 @@ class User(db.Model):
     phone = db.Column(db.String(15), nullable=False)
     address = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(250), nullable=False)
+    photo = db.Column(db.String(100))
     create_at = db.Column(db.DateTime, default=datetime.utcnow)
     update_at = db.Column(db.DateTime, default=datetime.utcnow)
 
