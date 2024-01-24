@@ -2,6 +2,7 @@ from app.model.user import User
 from app.model.product import Product
 
 from flask import render_template, jsonify
+from flask_jwt_extended import get_jwt_identity
 
 from app import response, app, db
 from flask import request
@@ -78,32 +79,46 @@ def singleDetailProduct(user, owner=None):
 
 #create product
 def save():
-    user = User.query.get()
     try :
+        current_user = get_jwt_identity()
+        # print("Current User:", current_user)
+        
+        if not isinstance(current_user, dict):
+            return response.badRequest([], 'Invalid user identity in JWT')
+
+            # Pastikan atribut 'name' tersedia di dalam objek current_user
+        if 'id' not in current_user:
+            return response.badRequest([], 'Field "id" not found in current_user')
+
+        id_user = current_user['id']
+        # print("id user :", id_user)
+
         type = request.form.get('type')
         name = request.form.get('name')
         description = request.form.get('description')
         set = request.form.get('set')
         quantity = request.form.get('quantity')
         price = request.form.get('price')
-        id_user = User.query.filter_by(email=email).first()
 
         input = [
             {
+                'typpe' : type,
                 'name' : name,
-                'role' : role,
+                'description' : description,
+                'set' : set,
+                'quantity' : quantity,
+                'price' : price,
+                'id_user' : id_user,
             }
         ]
 
-        users = User(name=name, role=role, email=email, password=password, phone=phone, address=address)
+        product = Product(type=type, name=name, description=description, set=set, qty=quantity, price=price, id_user=id_user)
 
-        users.setPassword(password)
-
-        db.session.add(users)
+        db.session.add(product)
         db.session.commit()
 
-        return response.success(input, 'create user successfully')
+        return response.success(input, 'create product successfully')
         
     except Exception as e:
         print(e)
-        return response.badRequest([], 'Failed to create user')
+        return response.badRequest([], 'Failed to create product')

@@ -5,6 +5,8 @@ from app.controller import ProductController
 from flask import request, render_template
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
+from app.model.user import User
+
 @app.route ('/')
 def index():
     return 'Hello Flask App testing'
@@ -48,12 +50,12 @@ def logins():
 # PRODUCT ROUTE
 
 @app.route('/product', methods=['GET', 'POST'])
+@jwt_required()
 def products():
     if request.method == 'GET':
         return ProductController.index()
     else :
-        current_user = get_jwt_identity()
-        print(current_user)
+        return ProductController.save()
     
 
 @app.route('/product/<id>', methods=['GET'])
