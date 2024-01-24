@@ -1,6 +1,7 @@
 from app import app, response
 from app.controller import UserController
 from app.controller import AuthController
+from app.controller import ProductController
 from flask import request, render_template
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
@@ -9,7 +10,7 @@ def index():
     return 'Hello Flask App testing'
 
 
-#USER ROUTES
+# USER ROUTES
 
 @app.route("/user/detail", methods=['GET'])
 @jwt_required()
@@ -43,3 +44,10 @@ def userDetail(id):
 @app.route('/login', methods=['POST'])
 def logins():
    return AuthController.login()
+
+
+# PRODUCT ROUTE
+
+@app.route('/product', methods=['GET'])
+def products():
+    return ProductController.index()
