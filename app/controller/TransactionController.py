@@ -76,3 +76,39 @@ def save():
         print(e)
 
 
+# get detail data transaction
+def detail(id):
+    try:
+        transaction = Transaction.query.filter_by(id=id).first()
+
+        if not transaction:
+            return response.badRequest([], 'Tidak ada data transaksi')
+
+        owner = get_owner_name(transaction.id_user)
+        product = get_product_name(transaction.id_product)
+        data = singleDetailTransaction(transaction, owner, product)
+
+        return response.success(data, "success")
+
+    except Exception as e:
+        print(e)
+
+def get_owner_name(id_user):
+    user = User.query.get(id_user)
+    return user.name if user else None
+
+
+def get_product_name(id_product):
+    product = Product.query.get(id_product)
+    return product.name if product else None
+
+def singleDetailTransaction(transaction, owner=None, product=None):
+    data = {
+        'id' : transaction.id,
+        'user' : owner,
+        'product' : product,
+        'quantity' : transaction.qty,
+        'Amount' : transaction.Amount   ,
+    }
+
+    return data

@@ -78,3 +78,9 @@ def transaction():
         return TransactionController.index()
     else :
         return TransactionController.save()
+
+
+@app.route('/transaction/<id>', methods=['GET', 'PUT', 'DELETE'])
+# @jwt_required()
+def transactionDetail(id):
+    return TransactionController.detail(id)

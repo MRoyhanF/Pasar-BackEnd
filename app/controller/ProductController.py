@@ -81,7 +81,8 @@ def singleDetailProduct(user, owner=None):
 def save():
     try :
         current_user = get_jwt_identity()
-        # print("Current User:", current_user)
+        print("Current User:", current_user)
+        # print("Current User:", current_user.id)
         
         if not isinstance(current_user, dict):
             return response.badRequest([], 'Invalid user identity in JWT')
@@ -164,7 +165,7 @@ def edit(id):
         print(e)
 
 
-#hapus data user
+#hapus data product
 def delete(id):
     try:
         product = Product.query.filter_by(id=id).first()
