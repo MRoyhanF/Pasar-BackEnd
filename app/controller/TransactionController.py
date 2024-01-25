@@ -112,3 +112,18 @@ def singleDetailTransaction(transaction, owner=None, product=None):
     }
 
     return data
+
+#hapus data product
+def delete(id):
+    try:
+        transaction = Transaction.query.filter_by(id=id).first()
+        if not product:
+            return response.badRequest([], 'Data Transaksi Kosong...!!')
+        
+        db.session.delete(transaction)
+        db.session.commit()
+
+        return response.success('', 'Berhasil Menghapus Data Transaksi...!')
+
+    except Exception as e:
+        print(e) 

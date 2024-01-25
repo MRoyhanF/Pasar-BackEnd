@@ -80,7 +80,10 @@ def transaction():
         return TransactionController.save()
 
 
-@app.route('/transaction/<id>', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/transaction/<id>', methods=['GET', 'DELETE'])
 # @jwt_required()
 def transactionDetail(id):
-    return TransactionController.detail(id)
+    if request.method == 'GET':
+        return TransactionController.detail(id)
+    else :
+        return TransactionController.delete(id)
