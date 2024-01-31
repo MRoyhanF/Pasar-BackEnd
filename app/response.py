@@ -8,7 +8,7 @@ def success(values, message):
 
     return make_response(jsonify(res)), 200
 
-def badRequest(values, message):
+def badRequest(values, message, ):
     res = {
         'data': values,
         'message': message
